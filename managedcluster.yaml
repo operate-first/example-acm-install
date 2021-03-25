@@ -1,0 +1,10 @@
+apiVersion: cluster.open-cluster-management.io/v1
+kind: ManagedCluster
+metadata:
+  labels:
+    cloud: Bare-Metal
+    name: testcluster
+    vendor: OpenShift
+  name: testcluster
+spec:
+  hubAcceptsClient: true

@@ -1,0 +1,61 @@
+apiVersion: hive.openshift.io/v1
+kind: ClusterDeployment
+metadata:
+  name: testcluster
+  namespace: testcluster
+  labels:
+    cloud: 'BMC'
+    vendor: 'OpenShift'
+  annotations:
+    hive.openshift.io/try-install-once: "true"
+spec:
+  baseDomain: example.com
+  clusterName: testcluster
+  controlPlaneConfig:
+    servingCertificates: {}
+  installAttemptsLimit: 2
+  installed: false
+  platform:
+    baremetal:
+      libvirtSSHPrivateKeySecretRef:
+        name: testcluster-ssh-private-key
+      hosts:
+        - name: os-ctrl-0
+          namespace: testcluster
+          role: master
+          bmc:
+            address: 'ipmi://10.0.15.5'
+            disableCertificateVerification: true
+            username: admin
+            password: secret
+          bootMACAddress: 'd4:ae:52:a5:0c:c4'
+        - name: os-ctrl-1
+          namespace: testcluster
+          role: master
+          bmc:
+            address: 'ipmi://10.0.3.5'
+            disableCertificateVerification: true
+            username: admin
+            password: secret
+          bootMACAddress: 'd4:ae:52:98:22:25'
+        - name: os-ctrl-2
+          namespace: testcluster
+          role: master
+          bmc:
+            address: 'ipmi://10.0.5.7'
+            disableCertificateVerification: true
+            username: admin
+            password: secret
+          bootMACAddress: '90:e2:ba:ad:89:40'
+  provisioning:
+    imageSetRef:
+      #quay.io/openshift-release-dev/ocp-release:4.7.0-x86_64
+      name: img4.7.0-x86-64-appsub
+    installConfigSecretRef:
+      name: testcluster-install-config
+    sshPrivateKeySecretRef:
+      name: testcluster-ssh-private-key
+    sshKnownHosts:
+      - "provisioner.testcluster.example.com,192.168.185.170 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBLvpVKaOfX870TZfbxETKZr0FoW3XaS9WdC/U5OUdwQSCQRyBdXauNgPE2iR1TJsOU0VGSUgrL0+YhIQifolZS8="
+  pullSecretRef:
+    name: testcluster-pull-secret

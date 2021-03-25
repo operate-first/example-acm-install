@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: testcluster-ssh-private-key
+  namespace: testcluster
+stringData:
+  ssh-privatekey: |
+    -----BEGIN OPENSSH PRIVATE KEY-----
+    ...secret key goes here...
+    -----END OPENSSH PRIVATE KEY-----
+type: Opaque

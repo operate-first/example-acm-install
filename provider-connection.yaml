@@ -1,0 +1,29 @@
+imageMirror: ""
+bootstrapOSImage: ""
+clusterOSImage: ""
+additionalTrustBundle: ""
+baseDomain: example.com
+libvirtURI: 'qemu+ssh://root@provisioner.testcluster.example.com/system'
+pullSecret: |
+  {
+    "auths": {
+      "cloud.openshift.com": {
+      },
+      "quay.io": {
+      },
+      "registry.connect.redhat.com": {
+      },
+      "registry.redhat.io": {
+      }
+    }
+  }
+sshPrivatekey: |
+  -----BEGIN OPENSSH PRIVATE KEY-----
+  ...private key goes here...
+  -----END OPENSSH PRIVATE KEY-----
+sshPublickey: >
+  ssh-rsa ...public.key.goes.here...  ACM provisioner
+sshKnownHosts:
+  - >-
+    provisioner.testcluster.example.com,192.168.185.170 ecdsa-sha2-nistp256 ...
+isOcp: true

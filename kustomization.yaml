@@ -1,0 +1,30 @@
+resources:
+  - namespace.yaml
+  - clusterdeployment.yaml
+  - klusterletaddonconfig.yaml
+  - managedcluster.yaml
+  - ssh-private-key.yaml
+  - pull-secret.yaml
+
+secretGenerator:
+  - name: testcluster-libvirt
+    namespace: default
+    files:
+      - metadata=provider-connection.yaml
+
+  - name: testcluster-install-config
+    files:
+      - install-config.yaml
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+patches:
+  - patch: |-
+      apiVersion: v1
+      kind: Secret
+      metadata:
+        name: testcluster-libvirt
+        labels:
+          cluster.open-cluster-management.io/cloudconnection: ""
+          cluster.open-cluster-management.io/provider: bmc

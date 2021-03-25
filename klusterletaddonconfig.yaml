@@ -1,0 +1,23 @@
+apiVersion: agent.open-cluster-management.io/v1
+kind: KlusterletAddonConfig
+metadata:
+  name: testcluster
+  namespace: testcluster
+spec:
+  clusterName: testcluster
+  clusterNamespace: testcluster
+  clusterLabels:
+    cloud: Bare-Metal
+    vendor: OpenShift
+  applicationManager:
+    enabled: true
+    argocdCluster: true
+  policyController:
+    enabled: true
+  searchCollector:
+    enabled: true
+  certPolicyController:
+    enabled: true
+  iamPolicyController:
+    enabled: true
+  version: 2.2.0

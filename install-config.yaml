@@ -1,0 +1,60 @@
+apiVersion: v1
+metadata:
+  name: testcluster
+baseDomain: example.com
+controlPlane:
+  name: master
+  replicas: 3
+  platform:
+    baremetal: {}
+compute:
+  - name: worker
+    replicas: 0
+networking:
+  clusterNetwork:
+    - cidr: 10.128.0.0/14
+      hostPrefix: 23
+  machineCIDR: 192.168.185.0/24
+  networkType: OpenShiftSDN
+  serviceNetwork:
+    - 172.30.0.0/16
+platform:
+  baremetal:
+    libvirtURI: qemu+ssh://root@provisioner.testcluster.example.com/system
+    provisioningNetworkCIDR: 172.22.1.0/24
+    provisioningNetworkInterface: eno1
+    provisioningBridge: provisioning
+    externalBridge: baremetal
+    apiVIP: 192.168.185.171
+    ingressVIP: 192.168.185.173
+    hosts:
+      - name: os-ctrl-0
+        namespace: testcluster
+        role: master
+        bmc:
+          address: 'ipmi://10.0.15.5'
+          disableCertificateVerification: true
+          username: admin
+          password: secret
+        bootMACAddress: 'd4:ae:52:a5:0c:c4'
+      - name: os-ctrl-1
+        namespace: testcluster
+        role: master
+        bmc:
+          address: 'ipmi://10.0.3.5'
+          disableCertificateVerification: true
+          username: admin
+          password: secret
+        bootMACAddress: 'd4:ae:52:98:22:25'
+      - name: os-ctrl-2
+        namespace: testcluster
+        role: master
+        bmc:
+          address: 'ipmi://10.0.5.7'
+          disableCertificateVerification: true
+          username: admin
+          password: secret
+        bootMACAddress: '90:e2:ba:ad:89:40'
+pullSecret: "" # skip, hive will inject based on it's secrets
+sshKey: |-
+    ssh-rsa ...public.key.goes.here...
